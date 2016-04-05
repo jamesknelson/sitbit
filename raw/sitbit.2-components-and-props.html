@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SitBit</title>
+  </head>
+  <body>
+    <div id="react-app"></div>
+
+    <script src="https://cdn.jsdelivr.net/react/0.14.7/react.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.7/react-dom.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+
+    <script type="text/javascript">
+    	function formatDate(time) {
+    		return moment(time*1000).format('YYYY-MM-DD')
+    	}
+    	function formatTime(time) {
+    		return moment(time*1000).format('HH:mm')
+    	}
+    	function formatDuration(hours) {
+    		return (
+    			hours > 1
+    				? (numeral(hours).format('0.00') + ' hours')
+    				: (numeral(hours * 60).format('0') + ' minutes')
+    		)
+    	}
+
+    	var SITS = [
+    		{
+    			from: 1459000000,
+    			to: 1459000300,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459000350,
+    			to: 1459000800,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459001000,
+    			to: 1459001900,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459002000,
+    			to: 1459005600,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459006000,
+    			to: 1459013600,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    	]
+
+        var SitLogGridRow = React.createClass({
+            propTypes: {
+                sit: React.PropTypes.shape({
+                    from: React.PropTypes.number.isRequired,
+                    to: React.PropTypes.number.isRequired,
+                    hourlyRate: React.PropTypes.number.isRequired,
+                    comment: React.PropTypes.string,
+                }).isRequired,
+            },
+
+            render: function() {
+                var hoursSitting = (this.props.sit.to - this.props.sit.from) / 60 / 60
+
+                return (
+                    React.createElement('tr', {},
+                        React.createElement('td', {}, formatDate(this.props.sit.from)),
+                        React.createElement('td', {}, formatTime(this.props.sit.from)),
+                        React.createElement('td', {}, formatTime(this.props.sit.to)),
+                        React.createElement('td', {}, formatDuration(hoursSitting)),
+                        React.createElement('td', {style: {textAlign: 'right'}}, numeral(this.props.sit.hourlyRate).format('$0,0.00')),
+                        React.createElement('td', {style: {textAlign: 'right'}}, numeral(this.props.sit.hourlyRate * hoursSitting).format('$0,0.00')),
+                        React.createElement('td', {}, this.props.sit.note)
+                    )
+                )
+            }
+        })
+
+        var SitLogGrid = React.createClass({
+            propTypes: {
+                sits: React.PropTypes.array.isRequired,
+            },
+
+            render: function() {
+                return (
+                    React.createElement('table', {cellPadding: '3px'},
+                        React.createElement('thead', {}, 
+                            React.createElement('tr', {}, 
+                                React.createElement('th', {}, 'Date'),
+                                React.createElement('th', {}, 'Start'),
+                                React.createElement('th', {}, 'End'),
+                                React.createElement('th', {}, 'Duration'),
+                                React.createElement('th', {}, 'Hourly Rate'),
+                                React.createElement('th', {}, 'Cost'),
+                                React.createElement('th', {}, 'Comment')
+                            )
+                        ),
+                        React.createElement('tbody', {}, this.props.sits.map(function(sit, i) {
+                            return React.createElement(SitLogGridRow, {key: i, sit: sit})
+                        }))
+                    )
+                )
+            }
+        })
+
+        var SitLogScreen = React.createClass({
+            propTypes: {
+                sits: React.PropTypes.array.isRequired,
+            },
+
+            render: function() {
+                return (
+                    React.createElement('div', {}, 
+                        React.createElement('h1', {}, "SitBit"),
+                        React.createElement(SitLogGrid, this.props)
+                    )
+                )
+            }
+        })
+		  	
+
+		ReactDOM.render(
+            React.createElement(SitLogScreen, {sits: SITS}),
+            document.getElementById('react-app')
+        )
+    </script>
+  </body>
+</html>

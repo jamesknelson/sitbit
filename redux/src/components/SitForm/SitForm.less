@@ -1,0 +1,34 @@
+.SitForm {
+	&-fields {
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	&-label {
+		display: block;
+		font-weight: bold;
+		font-family: Arial;
+		margin-bottom: 3px;
+	}
+
+	&-input {
+		display: block;
+		
+		width: 100%;
+
+		&[type=number] {
+			width: 50px;
+		}
+	}
+
+	&-actions {
+		margin-top: 15px;
+
+		text-align: right;
+
+		&-delete {
+			float: left;
+		}
+	}
+}

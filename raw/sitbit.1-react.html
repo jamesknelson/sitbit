@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SitBit</title>
+  </head>
+  <body>
+    <div id="react-app"></div>
+
+    <script src="https://cdn.jsdelivr.net/react/0.14.7/react.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.7/react-dom.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
+
+    <script type="text/javascript">
+    	function formatDate(time) {
+    		return moment(time*1000).format('YYYY-MM-DD')
+    	}
+    	function formatTime(time) {
+    		return moment(time*1000).format('HH:mm')
+    	}
+    	function formatDuration(hours) {
+    		return (
+    			hours > 1
+    				? (numeral(hours).format('0.00') + ' hours')
+    				: (numeral(hours * 60).format('0') + ' minutes')
+    		)
+    	}
+
+    	var sits = [
+    		{
+    			from: 1459000000,
+    			to: 1459000300,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459000350,
+    			to: 1459000800,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459001000,
+    			to: 1459001900,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459002000,
+    			to: 1459005600,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    		{
+    			from: 1459006000,
+    			to: 1459013600,
+    			hourlyRate: 10,
+    			comment: '',
+    		},
+    	]
+
+    	var rootElement =
+		  	React.createElement('div', {}, 
+		    	React.createElement('h1', {}, "SitBit"),
+		    	React.createElement('table', {cellPadding: '3px'},
+		    		React.createElement('thead', {}, 
+		    			React.createElement('tr', {}, 
+		    				React.createElement('th', {}, 'Date'),
+		    				React.createElement('th', {}, 'Start'),
+		    				React.createElement('th', {}, 'End'),
+		    				React.createElement('th', {}, 'Duration'),
+		    				React.createElement('th', {}, 'Hourly Rate'),
+		    				React.createElement('th', {}, 'Cost'),
+		    				React.createElement('th', {}, 'Comment')
+		    			)
+		    		),
+		    		React.createElement('tbody', {}, sits.map(function(sit, i) {
+		    			const hoursSitting = (sit.to - sit.from) / 60 / 60
+
+		    			return React.createElement('tr', {key: i}, 
+		    				React.createElement('td', {}, formatDate(sit.from)),
+		    				React.createElement('td', {}, formatTime(sit.from)),
+		    				React.createElement('td', {}, formatTime(sit.to)),
+		    				React.createElement('td', {}, formatDuration(hoursSitting)),
+		    				React.createElement('td', {style: {textAlign: 'right'}}, numeral(sit.hourlyRate).format('$0,0.00')),
+		    				React.createElement('td', {style: {textAlign: 'right'}}, numeral(sit.hourlyRate * hoursSitting).format('$0,0.00')),
+		    				React.createElement('td', {}, sit.note)
+		    			)
+		    		}))
+		    	)
+		    )
+
+		ReactDOM.render(rootElement, document.getElementById('react-app'))
+    </script>
+  </body>
+</html>

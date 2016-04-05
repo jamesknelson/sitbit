@@ -1,0 +1,41 @@
+.SitLogGrid {
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    border: 1px solid #f0f0f0;
+    width: 100%;
+    font-family: Arial;
+    font-size: 14px;
+    border-collapse: collapse;
+
+    &-heading {
+        padding: 5px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    &Row {
+        padding: 2px 5px;
+
+        &-clickable {
+            cursor: pointer;
+        }
+        &-clickable:hover &-cell {
+            background-color: #e8e8e8 !important;
+        }
+
+        &-cell {
+            text-align: center;
+        }
+        &-price {
+            text-align: right;
+        }
+
+        &:nth-child(odd) &-cell {
+            background-color: #ffffff;
+        }
+
+        &-active &-cell {
+            background-color: red !important;
+            color: white
+        }
+    }
+}
